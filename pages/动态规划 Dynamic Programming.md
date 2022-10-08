@@ -1,0 +1,33 @@
+- ## 动态规划题目特点
+	- 1. 计数
+		- - 有多少中方式走到右下角
+		- - 有多少中方式选出 k 个数使得和是 Sum
+	- 2. 求最大最小值
+		- - 从左上角走到右下角路径的最大数字和
+		- - 最长上升子序列长度
+	- 3. 求存在性
+		- - 取石子游戏，先手是否必胜
+		- - 能不能选出 k 个数使得和是 Sum
+- ## 动态规划阶梯思路
+	- 1. 分析出子问题
+	- 2. 写出转移方程
+		- f[X] = min{ f[X-2]+1, f[X-5]+1, f[X-7]+1 }
+	- 3. 确定初始条件和边界情况
+		- 边界情况例如： f[X<0] = 正无穷。
+		- 初始条件即是用转移方程算不出来，但又是计算必要的手动设计的定义，例如：f[0] = 0, f[0, 0] = 0。
+	- 确认计算顺序
+		- 计算顺序的确立有一条准则：尽可能地让后计算的数值可以依赖已缓存的计算结果。例如：
+		- 初始条件为 f[0] = 0, 然后计算 f[1], f[2], ..., f[27]
+		- 当我们计算到 f[X] 时, f[X-2], f[X-5], f[X-7] 都已经得到结果了
+		-
+-
+-
+- 由于用到了字典或哈希表来保存计算的中间结果，因此我们也称之为记忆化搜索(recursion with memorization)，如此这般经常会有人把动态规划称之为：
+	- 1. 用空间换时间的算法
+	  2. 带备忘录(memo)的递归
+	  3. 递归树的剪枝(pruning)
+- 事实上，这些别称只是对动态规划的落地实现的一种观察。空间换时间也看实现的优劣，递归也都可以用非递归(Non-recursive)/迭代(Iterative)的方式实现。迭代的实现方式能够更直观地去分析算法的时间复杂度，并且避免了递归带来的函数调用开销。
+-
+-
+- Bellman 对 DP 名字的起源，自己在他的自传 "Eye of the Hurricane: An Autobiography" 中写了这样一段话（原版第159页）：
+- >An interesting question is, ‘Where did the name, dynamic programming, come from?’ The 1950s were not good years for mathematical research. We had a very interesting gentleman in Washington named Wilson. He was Secretary of Defense, and he actually had a pathological fear and hatred of the word, research. I’m not using the term lightly; I’m using it precisely. His face would suffuse, he would turn red, and he would get violent if people used the term, research, in his presence. You can imagine how he felt, then, about the term, mathematical. The RAND Corporation was employed by the Air Force, and the Air Force had Wilson as its boss, essentially. Hence, I felt I had to do something to shield Wilson and the Air Force from the fact that I was really doing mathematics inside the RAND Corporation. What title, what name, could I choose? In the first place I was interested in planning, in decision making, in thinking. But planning, is not a good word for various reasons. I decided therefore to use the word, ‘programming.’ I wanted to get across the idea that this was dynamic, this was multistage, this was time-varying—I thought, let’s kill two birds with one stone. Let’s take a word that has an absolutely precise meaning, namely dynamic, in the classical physical sense. It also has a very interesting property as an adjective, and that is it’s impossible to use the word, dynamic, in a pejorative sense. Try thinking of some combination that will possibly give it a pejorative meaning. It’s impossible. Thus, I thought dynamic programming was a good name. It was something not even a Congressman could object to. So I used it as an umbrella for my activities.

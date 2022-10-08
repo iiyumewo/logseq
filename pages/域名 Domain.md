@@ -1,0 +1,2 @@
+- [[顶级域名 Top-Level-Domain]]
+- [[有效顶级域名 effective Top-Level-Domain]]

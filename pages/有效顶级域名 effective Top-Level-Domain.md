@@ -1,0 +1,8 @@
+- ## 什么是有效顶级域名？ #card
+	- `有效顶级域名 effective Top-Level-Domain`，缩写为 `eTLD`。
+	- 由[公共后缀列表 Public Suffix List](https://publicsuffix.org/list/) 定义，例如：co.uk、github.io、glitch.me。`eTLD` 需向 Mozilla 团队注册，且由其维护。
+	- Chrome、Edge 从 `PSL` 中拉取数据，以此对域名进行处理。IE 浏览器根据自维护的一套列表来定义 `eTLD`。
+	- 从 [PSL Guidelines](https://github.com/publicsuffix/list/wiki/Guidelines) 这份官方文件来看，注册 `eTLD` 只要按照官方的規定发个 PR 就可以了，只是整个流程看起来需要花些事件，而且从过往的 PR 看起來都是人工审核。
+	- ### 事故案例
+		- 2020年5月，阿里云所有 ac.cn 后缀的网站全部挂掉。ac.cn 是中科院申请的 eTLD，它属于顶级域名，但是阿里没有采用 PSL 去查询 eTLD，而是简单地将 cn 识别为顶级域名，ac 视为二级域名。因此阿里认为 ac.cn 这个二级域名没有备案，因此所有 *.ac.cn 全部无法访问。然而 ac.cn 是 eTLD，也是无需备案的。
+-

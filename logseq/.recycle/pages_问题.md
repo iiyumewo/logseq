@@ -1,0 +1,4 @@
+- 什么是顶级域名 TLD 和有效顶级域名 eTLD？ #card
+	- [[顶级域名 Top-Level-Domain]] [[有效顶级域名 effective Top-Level-Domain]]
+-
+-
