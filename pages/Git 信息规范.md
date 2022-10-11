@@ -8,9 +8,9 @@
   3. 为 git log 提供可查询的关键字
   4. 自动生成 CHANGELOG.md
 -
-##### type
-
-包含以下八种：
+- ## 提交类型
+  
+  包含以下八种：
 - **feat**（feature，产品新功能，通常是能够让用户觉察到的变化，小到文案或样式修改）
 - **fix**（bug fix，修复 bug）
 - **docs**（documentation，更新文档或注释）
