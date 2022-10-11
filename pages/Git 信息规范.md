@@ -18,7 +18,7 @@
 - **style**（code formatting, missing semi colons, … 代码格式调整，对逻辑无影响：比如为按照 eslint 或团队风格修改代码格式。注意不是 UI 变更）
 - **refactor**（重构：代码优化但不影响现有功能或添加功能。比如文件、变量重命名、代码抽象为函数，消除魔法数字等）
 - **test**（when adding missing tests 单测相关变更）
-- **chore**（杂项：其他无法归类的变更，比如代码合并）
+- **other**（其他：无法归类的变更，比如代码合并）
 - **perf** （性能提升变更）
 - **ci**（持续集成脚本相关变更）
 - **build**（代码构建相关变更：比如修复部署时的构建问题、构建脚本 webpack 或 gulp 相关变更）
