@@ -9,7 +9,7 @@
   4. 自动生成 CHANGELOG.md
 -
 -
-- ## 提交类型
+- ## 提交类型 Type
 - 对本次提交类型的选择
 - `feature` 产品新功能的提交
 - `bugfix` bug 修复的提交
