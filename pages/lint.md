@@ -476,33 +476,386 @@
   }
   ```
 -
+- ## 利用 Husky 提供本地 pre-commit 编码检查
+- ### 安装及初始化 Husky
+- ```shell
+  // 安装 Husky
+  npm install husky --save-dev
+  // 初始化 Husky，创建 .husky/pre-commit 文件
+  npx husky-init install
+  
+  // .husky/pre-commit 文件中添加 eslint 命令
+  npm run eslint-fix
+  ```
+-
+- ### 环境问题
+- 如果使用 Git 管理软件，可能会遇到环境问题，在提交代码时抛出如下错误：
+- ```shell
+  .husky/pre-commit: line 8: npm: command not found
+  ```
+- 这是因为这类 GUI 工具自身的环境变量可能比用户态环境变量少一些。可以在 `pre-commit` 文件中添加 `echo $PATH`，然后在提交中确认一下。
+- 可以通过两个方案解决，但是由于环境变量在每个开发者的机器上都不尽相同，请遇到问题的伙伴自行选择：
+- 1. 官方在 [Troubleshoot/Command not found](https://typicode.github.io/husky/#/?id=command-not-found) 提供的修改根目录中 `.huskyrc.js` 配置文件方案。
+  2. 可以在你需要修改的钩子文件，例如 `pre-commit` 中直接添加你需要的环境变量 `PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/iiyumewo/.cargo/bin ..."`。
 -
 -
 -
-- 对既有项目的测试
-- 提供体验项目
+- # 对既有项目的测试
+- 根据现有 ESLint + Prettier 对 `hz-new-media-web` 项目执行 lint&format，存在以下无法被自动修复的问题。
+- ```shell
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/components/Charts/bar.vue
+    158:27  error  Unexpected chained assignment  no-multi-assign
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/components/Charts/line.vue
+    143:27  error  Unexpected chained assignment  no-multi-assign
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/components/TimeSelectForm.vue
+    110:36  warning  Expected '===' and instead saw '=='  eqeqeq
+    110:70  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/components/TreeSelectMore.vue
+    186:27   warning  Expected '!==' and instead saw '!='                   eqeqeq
+    189:80   warning  Expected '!==' and instead saw '!='                   eqeqeq
+    190:86   warning  Expected '!==' and instead saw '!='                   eqeqeq
+    193:93   warning  Expected '!==' and instead saw '!='                   eqeqeq
+    193:171  warning  Expected '!==' and instead saw '!='                   eqeqeq
+    205:11   error    Unexpected if as the only statement in an else block  no-lonely-if
+    205:81   warning  Expected '!==' and instead saw '!='                   eqeqeq
+    205:156  warning  Expected '!==' and instead saw '!='                   eqeqeq
+    205:231  warning  Expected '!==' and instead saw '!='                   eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/components/ueditor/index.vue
+    106:13  error  Unexpected alias '_this' for 'this'  consistent-this
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/binduser/binduser.router.js
+    2:1  error  './index.vue' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/feelings/index.vue
+    155:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/charts/pie.vue
+    69:25  error  Unexpected chained assignment  no-multi-assign
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/request/index.js
+    6:11  error  Unexpected alias 'context' for 'this'  consistent-this
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/statement/index.vue
+    182:9  error  Parsing error: Unexpected token, expected "," (115:9)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/BaseMixin.js
+    12:7  error  Unexpected if as the only statement in an else block  no-lonely-if
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/toutiao/Privacy.vue
+    320:28  error  Parsing error: Missing semicolon. (199:28)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/toutiao/Update.vue
+    245:13  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/toutiao/WrongWords.vue
+    442:29  warning  Expected '===' and instead saw '=='  eqeqeq
+    442:52  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/wechat/WrongWords.vue
+    202:1   error    '@/utils' import is duplicated       no-duplicate-imports
+    394:29  warning  Expected '===' and instead saw '=='  eqeqeq
+    394:57  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/weibo/Update.vue
+    200:13  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/media-monitor/views/weibo/WrongWords.vue
+    412:29  warning  Expected '===' and instead saw '=='  eqeqeq
+    412:52  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/message-interaction/keyword-reply/index.vue
+    144:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/message-interaction/reply-news/addNews.vue
+    473:7  error  Assignment (=) can be replaced with operator assignment (+=)  operator-assignment
+    476:9  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/message-interaction/reply-text/index.vue
+    124:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/monitoring/site/index.vue
+    42:11  error  Unexpected alias '_this' for 'this'  consistent-this
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/availability/edit.vue
+    144:30  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/availability/index.vue
+    153:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/other/index.vue
+    257:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/toutiao/index.vue
+    185:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/website/config/index.vue
+    320:7  warning  Expected a default case  default-case
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/website/index.vue
+    148:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/wechat/index.vue
+    204:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/weibo/edit.vue
+    84:1  error  '../../../../utils' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/account/weibo/index.vue
+    179:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/declare/expage/index.vue
+    118:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/declare/wechat/index.vue
+    270:15  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/declare/weibo/index.vue
+    262:15  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/lexicon/custom/category/index.vue
+    113:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/lexicon/custom/sensitivity/index.vue
+    154:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/lexicon/custom/wrongly/index.vue
+    170:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/lexicon/library/category/index.vue
+    108:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/audio/edit.vue
+    239:8  error  Parsing error: Unexpected token, expected "," (183:8)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/audio/myAudio.vue
+    151:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/audio/publishAudio.vue
+    152:11  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/image/myImage.vue
+    158:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/image/publishImage.vue
+    156:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/mediaTheme/index.vue
+    118:11  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/news/addNews.vue
+     645:16  warning  Expected '===' and instead saw '=='       eqeqeq
+     650:25  warning  Expected '===' and instead saw '=='       eqeqeq
+    1158:11  error    Unexpected var, use let or const instead  no-var
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/news/depot.vue
+    234:15  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/news/selectAccount.vue
+    151:27  warning  Expected '===' and instead saw '=='  eqeqeq
+    265:29  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/publishHistore/index.vue
+    69:15  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/media/templates/index.vue
+    127:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/monitor/components/TypoMonitorModal.vue
+    271:14  error  Parsing error: Unexpected token (203:14)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/performance/release/index.vue
+    165:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    169:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    173:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    177:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    181:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    185:19  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/performance/statistics/index.vue
+    222:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    226:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    230:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    234:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    238:19  warning  Expected '===' and instead saw '=='  eqeqeq
+    242:19  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/publish/microblog/index.vue
+    232:7   warning  Expected a default case              default-case
+    233:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    237:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    241:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    245:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    249:38  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/publish/wechat/index.vue
+    233:7   warning  Expected a default case              default-case
+    234:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    238:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    242:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    246:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    250:38  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/reports/bigScreen/components/Account/AccountTop10List.vue
+    165:28  error  Unexpected chained assignment  no-multi-assign
+    165:45  error  Unexpected chained assignment  no-multi-assign
+    165:62  error  Unexpected chained assignment  no-multi-assign
+    165:79  error  Unexpected chained assignment  no-multi-assign
+    228:28  error  Unexpected chained assignment  no-multi-assign
+    228:45  error  Unexpected chained assignment  no-multi-assign
+    228:62  error  Unexpected chained assignment  no-multi-assign
+    228:79  error  Unexpected chained assignment  no-multi-assign
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/new-media/reports/survey/index.vue
+    153:29  error  Parsing error: Unexpected token, expected "," (89:29)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/officialMenu/menu.vue
+     667:11  error    Unexpected alias '_zhat' for 'this'  consistent-this
+    1555:20  warning  Expected '===' and instead saw '=='  eqeqeq
+    1556:28  warning  Expected '===' and instead saw '=='  eqeqeq
+    1557:30  warning  Expected '===' and instead saw '=='  eqeqeq
+    1558:22  warning  Expected '===' and instead saw '=='  eqeqeq
+    1559:21  warning  Expected '===' and instead saw '=='  eqeqeq
+    1560:37  warning  Expected '===' and instead saw '=='  eqeqeq
+    1561:34  warning  Expected '===' and instead saw '=='  eqeqeq
+    1562:32  warning  Expected '===' and instead saw '=='  eqeqeq
+    1563:33  warning  Expected '===' and instead saw '=='  eqeqeq
+    1564:31  warning  Expected '===' and instead saw '=='  eqeqeq
+    1565:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    1566:39  warning  Expected '===' and instead saw '=='  eqeqeq
+    1567:53  warning  Expected '===' and instead saw '=='  eqeqeq
+    1568:47  warning  Expected '===' and instead saw '=='  eqeqeq
+    1569:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    1570:44  warning  Expected '===' and instead saw '=='  eqeqeq
+    1571:46  warning  Expected '===' and instead saw '=='  eqeqeq
+    1572:37  warning  Expected '===' and instead saw '=='  eqeqeq
+    1583:18  warning  Expected '===' and instead saw '=='  eqeqeq
+    1584:26  warning  Expected '===' and instead saw '=='  eqeqeq
+    1586:28  warning  Expected '===' and instead saw '=='  eqeqeq
+    1587:20  warning  Expected '===' and instead saw '=='  eqeqeq
+    1637:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    1639:45  warning  Expected '===' and instead saw '=='  eqeqeq
+    1641:45  warning  Expected '===' and instead saw '=='  eqeqeq
+    1643:45  warning  Expected '===' and instead saw '=='  eqeqeq
+    1669:72  warning  Expected '===' and instead saw '=='  eqeqeq
+    1672:72  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/proof/ErrorContent.vue
+     99:17  warning  Expected '===' and instead saw '=='  eqeqeq
+    101:24  warning  Expected '===' and instead saw '=='  eqeqeq
+    103:24  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/proof/history.vue
+    105:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/blankColumn.vue
+    136:1  error  '@/utils/BaseUtil' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/components/broken-chain.vue
+    64:40  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/components/dark-chain.vue
+    58:40  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/darkChainDetail.vue
+    125:1  error  '@/utils/BaseUtil' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/index.vue
+    42:11  error  Unexpected alias '_this' for 'this'  consistent-this
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/linkAvailabilityDetail.vue
+    120:1  error  '@/utils/BaseUtil' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/mixins/page.js
+    5:1  error  'vuex' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/notUpdate.vue
+    116:1  error  '@/utils/BaseUtil' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/statement/index.vue
+    176:9  error  Parsing error: Unexpected token, expected "," (109:9)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-monitor/statement/statement.store.js
+    47:29  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/components/broken-chain.vue
+    64:40  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/components/dark-chain.vue
+    61:40  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/enclosure/index.vue
+    431:29  warning  Expected '===' and instead saw '=='  eqeqeq
+    431:52  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/index.vue
+    42:11  error  Unexpected alias '_this' for 'this'  consistent-this
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/linkAvailabilityDetail.vue
+    155:1  error  '@/utils/BaseUtil' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/mixins/page.js
+    5:1  error  'vuex' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/site-scanning/privacy/detail.vue
+    231:12  error  Parsing error: Unexpected token (142:12)
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/system/home/Home.vue
+    218:7   warning  Expected a default case              default-case
+    219:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    223:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    227:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    231:38  warning  Expected '===' and instead saw '=='  eqeqeq
+    235:38  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/system/log/index.vue
+    71:13  error  Assignment (=) can be replaced with operator assignment (-=)  operator-assignment
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/system/profile/message.vue
+    116:25  warning  Expected '===' and instead saw '=='  eqeqeq
+    118:32  warning  Expected '===' and instead saw '=='  eqeqeq
+    120:32  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/modules/wechat/pages/warning/noupdate.vue
+    54:46  warning  Expected '===' and instead saw '=='  eqeqeq
+    61:46  warning  Expected '===' and instead saw '=='  eqeqeq
+    73:33  warning  Expected '===' and instead saw '=='  eqeqeq
+    76:40  warning  Expected '===' and instead saw '=='  eqeqeq
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/request/index.js
+    41:11  error  Unexpected alias '_this' for 'this'  consistent-this
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/store/index.js
+    6:1  error  '../utils/BaseUtil' import is duplicated  no-duplicate-imports
+  
+  /Users/iiyumewo/Documents/Projects/hz-new-media-web/src/utils/BaseUtil.js
+     15:33  warning  Expected '===' and instead saw '=='  eqeqeq
+     39:53  warning  Expected '===' and instead saw '=='  eqeqeq
+    413:20  warning  Expected '===' and instead saw '=='  eqeqeq
+    415:27  warning  Expected '===' and instead saw '=='  eqeqeq
+    417:27  warning  Expected '===' and instead saw '=='  eqeqeq
+    419:27  warning  Expected '===' and instead saw '=='  eqeqeq
+  ```
 -
-- 既然有vscode插件，那么还装eslint的npm包吗？
-- 要装。虽然vscode插件也可以单独配置格式，但是如果项目中有 `.eslintrc.js` 文件，那么eslint插件会优先执行 `.eslintrc.js` 文件的配置。
-- 并且不是每个人都会装eslint的vscode插件。此时eslint的npm包就作为一个保障，并且里面的 `.eslintrc.js` 配置就作为标准配置。
-- **装vscode插件只是为了方便自己开发而已。**
+- ### 分析结果
+- ✖ 172 problems (67 errors, 105 warnings)
+- *警告 warnings(不会在 pre-commit 阶段阻止流程)*：
+	- **eqeqeq** 要求使用  `===`  和  `!==` : 101个
+	- **default-case** 要求  `switch`  语句中有  `default`  分支 : 4个
+- *errors(会在 Git hook 中抛出错误，且阻止 commit 执行)*:
+	- **no-multi-assign** 禁止连续赋值  : 11个
+	- **no-lonely-if** 禁止  `if`  作为唯一的语句出现在  `else`  语句中 : 2个
+	- **consistent-this** 当获取当前执行环境的上下文时，强制使用一致的命名 : 7个
+	- **no-duplicate-imports** 禁止重复模块导入 : 11个
+	- **operator-assignment** 要求或禁止在可能的情况下使用简化的赋值操作符 : 28个
+	- **unexpected-token** 语法逻辑致命错误 : 7个
+	- **no-var** 要求使用  `let`  或  `const`  而不是  `var` : 1个
+- 在如此规模的项目中，通过对规范一些合理的降级和妥协，将 `error` 的数量压缩在67个，这是一个人为修改可以接收的数字。如果是在一个新的项目中，诸如 `eqeqeq`、`default-case` 这类的规则就会被提升为 error 级别。
+- 在 JavaScript 这样一个弱类型语言中，如果不引入 TypeScript 完善的类型系统，规范制定的原则就应该比较严格。团队开发的初期可能会花一些时间在适应规则上，但是从长远来看，这一切都是值得的，结果会体现在代码的质量，提交的效率，项目的稳定性上。
+- # 提供体验项目
 -
-- vscode setting.json
--
-- eslint-plugin-prettier 分析下 eslint 的工作原理 prettier 的工作原理，从原理上决定 .eslintrc.js 和 .prettierrc.js 各自应该规范哪些部分 最佳实践
--
-- 为了避免编辑器或ide既无插件或功能支持，也不主观执行 code formating 的小伙伴，我们会将最后的检查环节放在 git commit hook，以确保进入版本管理库的代码均经过了lint
-- husky 操作 git 钩子的工具
 - lint-staged 本地暂存代码检查工具
-- **commitlint** commit 信息校验工具
 - **commitizen** 辅助 commit 信息 ,就像这样,通过选择输入,规范提交信息
--
--
-- EditorConfig
--
--
--
-- `ESLint` ：作代码质量检测、编码风格约束等；
-- `Prettier` : 专注于代码格式化的工具，美化代码；
-- `Vetur` : 通常使用它的语法高亮功能；
-- `EditorConfig` : 跨编辑器和IDE编写代码，保持一致的简单编码风格；
