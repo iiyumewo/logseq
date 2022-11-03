@@ -1,0 +1,11 @@
+- https://www.elastic.co/guide/en/elasticsearch/reference/8.4/docs-bulk.html
+- can greatly increase indexing speed.
+- # 请求
+- `POST /_bulk`
+- `POST /<target>/_bulk`
+-
+- # 使用条件
+-
+-
+- # 描述
+-

@@ -1,0 +1,4 @@
+- > The name is actually redundant: an index always maps back from terms to the parts of a document where they occur. Nevertheless,inverted index, or sometimes inverted file, has become the standard term in information retrieval.(foot node) Some information retrieval researchers prefer the term inverted file, but expressions like index construction and index compression are much more common than inverted file construction and inverted file compression. For consistency, we use (inverted) index throughout this book.
+-
+-
+-
