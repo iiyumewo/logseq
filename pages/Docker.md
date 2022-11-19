@@ -193,6 +193,9 @@
   # 镜像打标签
   $ docker tag iiyumewo/static_web docker.example.com:5000/iiyumewo/static_web
   
+  # 容器文件拷贝
+  $ docker cp mycontainer:/opt/testnew/file.txt /opt/test/
+  $ docker cp /opt/test/file.txt mycontainer:/opt/testnew/
   ```
 -
 - 更多日志相关参考 [[Docker Logging]]
