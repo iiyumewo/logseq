@@ -57,8 +57,7 @@
 	- `destination`、`dst`、`target`：挂载在容器中的路径。
 	- `readonly`、`ro`：标识只读挂载，无值。
 	- `volume-opt`：可以多次指定的选项，值也是键值对，例如 `volume-opt=type=nfs`。
-- ```shell
-  # --mount 启动带有卷的容器
+- # --mount 启动带有卷的容器
   $ docker run -d \
     --name=nginxtest \
     --mount source=nginx-vol,destination=/usr/share/nginx/html \
@@ -82,7 +81,6 @@
     --name devtest-service \
     --mount source=myvol2,target=/app \
     nginx:latest
-  ```
 -
 -
 -

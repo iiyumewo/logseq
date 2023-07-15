@@ -6,7 +6,7 @@
 -
 - ### 开发分支
 - 以 `release/` 为前缀做分支收纳，具体格式为 `release/{ developing version }`，例如 `release/1.1`、`release/1.5.2` 等。在该开发中版本未发布之前的 feature 开发均提交在该分支中。
-- ![image.png](../assets/image_1665469782577_0.png){:height 308, :width 444}
+- ![image.png](../assets/image_1665469782577_0.png){:height 316, :width 444}
 -
 - ### 针对线上的 bug 修复分支
 - 应当以 `hotfix/` 前缀做分支收纳，具体格式为 `hotfix/{ YYYYMMDD }-{ bug component or intro }`，例如 `hotfix/20221012-token`、`hotfix/20221010-watcher-queue` 等。

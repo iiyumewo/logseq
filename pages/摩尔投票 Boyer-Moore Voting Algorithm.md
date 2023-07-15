@@ -1,0 +1,5 @@
+- 又名众数投票 Majority Vote Algorithm，是一种用于确定**数据中最多元素，即众数**的投票算法
+- > 它的基本思想是，对于一组数据，每次从序列中取出两个不相同的数，并从序列中删除这两个数。这样，当序列中最多只剩下一个数时，这个数就是序列中的众数。
+- 时间复杂度 O(n) 空间复杂度 O(1)
+- [A Linear-Time Majority Vote Algorithm](https://link.zhihu.com/?target=https%3A//www.cs.utexas.edu/~moore/best-ideas/mjrty/example.html)
+-
